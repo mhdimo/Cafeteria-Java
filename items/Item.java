@@ -2,7 +2,7 @@ package items;
 
 public interface Item {
 
-    String getname();
-    double getprice();
-    
+    String getName();
+    double getPrice();
+    int getAmount();
 }
