@@ -41,4 +41,3 @@ The Observer Pattern is used to monitor the status of the cup. The `CupObserver`
 5. Display cup information.
 6. Reset the order if needed.
 
-## Project Structure
