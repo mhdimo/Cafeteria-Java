@@ -1,43 +1,80 @@
-# SWE Project
+# Coffee Shop Management System
 
 ## Overview
-This project is a simple cafeteria management system that allows users to select cups, make various drinks, add syrup, and check the status of the cup. The system is designed to handle different types of drinks and cup sizes, ensuring that the cup does not overflow.
+A comprehensive Java-based coffee shop management system that simulates drink preparation with cup size selection, syrup addition, and overflow prevention. The system implements design patterns including Factory, Decorator, and Observer for extensible and maintainable architecture.
 
 ## Features
-- Select different cup sizes (Normal, Grande, Venti)
-- Make various drinks (Americano, Cappuccino, Caffè Latte, Espresso)
-- Add syrup to the cup
-- Check if the cup is full or overflowing
-- Display cup information (size, drink amount, syrup amount, remaining capacity)
-- Reset the current order
+- **Cup Selection**: Choose from Normal (200ml), Grande (250ml), or Venti (400ml) cups
+- **Drink Preparation**: Create various coffee drinks (Americano, Cappuccino, Latte, etc.)
+- **Syrup Customization**: Add syrup with overflow protection
+- **Loyalty Program**: Earn and redeem points for free drinks
+- **Seasonal Specials**: Holiday-themed drinks during special seasons
+- **GUI Mode**: Toggle between console and graphical interface
+- **Cup Monitoring**: Real-time cup status tracking (fullness, overflow, remaining capacity)
 
-## Design Patterns Used
-### Factory Pattern
-The Factory Pattern is used to create different sizes of cups. The `CupFactory` class is responsible for creating instances of the `Cup` class based on the size specified by the user.
+## Installation
+1. **Prerequisites**:
+   - Java 17 or later
+   - Maven (for building)
 
-- [CupFactory.java](factories/CupFactory.java)
+2. **Build & Run**:
+   ```bash
+   mvn clean package
+   java -cp target/classes main.Main
+   ```
 
-### Decorator Pattern
-The Decorator Pattern is used to add additional functionality to drinks, such as adding syrup. The `ItemDecorator` class is an abstract class that implements the `Item` interface and is extended by the `Syrup` class to add syrup to a drink.
+   For development in IDE:
+   - Import as Maven project
+   - Run `main.Main` class
 
-- [ItemDecorator.java](decorators/ItemDecorator.java)
-- [Syrup.java](decorators/Syrup.java)
+## Usage Examples
+### Console Mode
+```
+=== Cafeteria Menu ===
+1. Select a cup
+2. Make an Americano
+3. Make a Cappuccino
+...
 
-### Observer Pattern
-The Observer Pattern is used to monitor the status of the cup. The `CupObserver` interface defines methods for handling events when the cup is full or overflowing. The `AlarmObserver` class implements this interface to provide warnings when these events occur.
+Choose cup size:
+1. Normal (200 ml)
+2. Grande (250 ml)
+3. Venti (400 ml)
+Enter your choice: 1
+Selected Normal cup (200 ml).
+```
 
-- [CupObserver.java](observers/CupObserver.java)
-- [AlarmObserver.java](observers/AlarmObserver.java)
+### GUI Mode
+![GUI Screenshot](gui-screenshot.png) (Screenshot to be added)
 
-## How to Run
-1. Compile the project using your preferred Java IDE or command line.
-2. Run the `Main` class to start the cafeteria management system.
+## System Architecture
+- **Design Patterns**:
+  - Factory: Cup creation
+  - Decorator: Drink customization
+  - Observer: Cup status monitoring
+- **Package Structure**:
+  - `main`: Entry point
+  - `items`: Drink implementations
+  - `models`: Cup model
+  - `factories`: Cup factory
+  - `observers`: Status observers
 
-## Example Usage
-1. Select a cup size.
-2. Make a drink (e.g., Americano).
-3. Add syrup if desired.
-4. Check the cup's fullness or overflow status.
-5. Display cup information.
-6. Reset the order if needed.
+## Contributing
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
 
+## Testing
+Run unit tests with:
+```bash
+mvn test
+```
+
+## License
+MIT License
+
+Copyright (c) [year] [fullname]
+
+Permission is hereby granted... (full license text)
