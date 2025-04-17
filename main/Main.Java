@@ -2,11 +2,15 @@ package main;
 
 import java.util.Scanner;
 import java.util.InputMismatchException;
+// Removed: import java.sql.*;
+import javax.swing.*;
 import items.Drink;
 import items.Americano;
 import items.Cappuccino;
 import items.CaffeLatte;
 import items.Espresso;
+import items.PumpkinSpiceLatte;
+import items.PeppermintMocha;
 import models.Cup;
 import factories.CupFactory;
 import observers.AlarmObserver;
@@ -17,8 +21,14 @@ public class Main {
     private static AlarmObserver alarm = new AlarmObserver();
     private static int drinkCount = 0;
     private static int syrupCount = 0;
+    private static int loyaltyPoints = 0;
+    private static boolean isHolidaySeason = false;
+    private static boolean useGUI = false;
+    // Removed: private static Connection dbConnection = null;
+    // Removed: private static final String DB_URL = "jdbc:sqlite:coffee_shop.db";
 
     public static void main(String[] args) {
+        // Removed database connection and initialization try-catch block
         try {
             while (true) {
                 displayMenu();
@@ -29,18 +39,46 @@ public class Main {
             System.out.println("An unexpected error occurred: " + e.getMessage());
         } finally {
             scanner.close();
+            // Removed: Close dbConnection if it was open
         }
     }
 
+    // Removed: private static void initializeDatabase() { ... }
+
     private static void displayMenu() {
+        if (useGUI) {
+            // Adjusted options array
+            String[] options = {"Order", "Settings", "Exit"}; // Removed "View History"
+            int choice = JOptionPane.showOptionDialog(null, 
+                "Welcome to our Coffee Shop!", 
+                "Main Menu", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.PLAIN_MESSAGE, 
+                null, 
+                options, 
+                options[0]);
+            // Adjusted choice mapping
+            if (choice == 0) processUserChoice(1); // Order maps to case 1-8, 14-17
+            else if (choice == 1) processUserChoice(9); // Settings maps to case 9-12
+            else if (choice == 2 || choice == JOptionPane.CLOSED_OPTION) processUserChoice(13); // Exit maps to case 13 (new exit index)
+            return;
+        }
         System.out.println("\n=== Cafeteria Menu ===");
+        // Adjusted menu options array
         String[] menuOptions = {
             "Select a cup",
             "Make an Americano",
             "Make a Cappuccino",
             "Make a Caffè Latte",
             "Make an Espresso",
+            "Make a Pumpkin Spice Latte",
+            "Make a Peppermint Mocha",
             "Add Syrup",
+            "Check Loyalty Points",
+            "Toggle Holiday Season",
+            "Redeem Free Drink",
+            "Toggle GUI Mode",
+            // Removed: "View Order History",
             "Check Cup Fullness",
             "Check Cup Overflow",
             "Check Cup Info", 
@@ -68,6 +106,7 @@ public class Main {
     }
 
     private static void processUserChoice(int choice) {
+        // Adjusted switch cases due to removal of "View Order History"
         switch (choice) {
             case 1:
                 selectCup();
@@ -85,21 +124,44 @@ public class Main {
                 makeDrink(new Espresso(currentCup));
                 break;
             case 6:
-                addSyrup();
+                makeDrink(new PumpkinSpiceLatte(currentCup));
                 break;
             case 7:
-                checkCupFullness();
+                makeDrink(new PeppermintMocha(currentCup));
                 break;
             case 8:
-                checkCupOverflow();
+                addSyrup();
                 break;
             case 9:
-                checkCupInfo();  
+                checkLoyaltyPoints();
                 break;
             case 10:
-                resetCurrentOrder();
+                toggleHolidaySeason();
                 break;
             case 11:
+                redeemFreeDrink();
+                break;
+            case 12:
+                toggleGUIMode();
+                break;
+            // Case 13 is now Check Cup Fullness
+            case 13:
+                checkCupFullness();
+                break;
+            // Case 14 is now Check Cup Overflow
+            case 14:
+                checkCupOverflow();
+                break;
+            // Case 15 is now Check Cup Info
+            case 15:
+                checkCupInfo();  
+                break;
+            // Case 16 is now Reset Current Order
+            case 16:
+                resetCurrentOrder();
+                break;
+            // Case 17 is now Exit
+            case 17:
                 exitProgram();
                 return;
             default:
@@ -139,12 +201,14 @@ public class Main {
             System.out.println("Please select a cup first!");
             return;
         }
-    
-        currentCup.addDrink(drink);
+        if (isHolidaySeason && (drink instanceof PumpkinSpiceLatte || drink instanceof PeppermintMocha)) {
+            System.out.println("Enjoy your festive drink!");
+        }
+        drink.make();
         drinkCount++;
-        System.out.println("You have selected " + drink.getClass().getSimpleName() + "!");
-        System.out.printf("Price: $%.2f%n", drink.getPrice());
-        System.out.printf("Amount: %d ml%n", drink.getAmount());
+        loyaltyPoints++;
+        // Removed: saveOrderToDatabase(drink.getDescription(), drink.getCost());
+        System.out.println("Current loyalty points: " + loyaltyPoints);
     }
 
     private static void addSyrup() {
@@ -211,6 +275,31 @@ public class Main {
         System.out.printf("Syrup Amount: %d ml%n", currentCup.getSyrupAmount());
         System.out.printf("Remaining Capacity: %d ml%n", currentCup.getRemainingCapacity());
     }
+    
+    private static void checkLoyaltyPoints() {
+        System.out.println("Current loyalty points: " + loyaltyPoints);
+    }
+    
+    private static void toggleHolidaySeason() {
+        isHolidaySeason = !isHolidaySeason;
+        System.out.println("Holiday season mode: " + (isHolidaySeason ? "ON" : "OFF"));
+    }
+    
+    private static void redeemFreeDrink() {
+        if (loyaltyPoints >= 1000) {
+            loyaltyPoints -= 1000;
+            System.out.println("Free drink redeemed! Enjoy your beverage.");
+        } else {
+            System.out.println("You need at least 1000 points to redeem a free drink.");
+        }
+    }
+    
+    private static void toggleGUIMode() {
+        useGUI = !useGUI;
+        System.out.println("GUI mode: " + (useGUI ? "ON" : "OFF"));
+    }
+    
+    // Removed: private static void viewOrderHistory() { ... }
 
     private static void resetCurrentOrder() {
         currentCup = null;
@@ -220,7 +309,8 @@ public class Main {
     }
 
     private static void exitProgram() {
-        System.out.println("Thank you for visiting! Goodbye.");
+        System.out.println("Thank you for visiting! Exiting...");
+        // Removed: Close dbConnection if it was open
         System.exit(0);
     }
 }

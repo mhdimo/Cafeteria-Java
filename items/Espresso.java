@@ -22,6 +22,11 @@ public class Espresso implements Drink {
     }
 
     @Override
+    public void make() {
+        System.out.println("Brewing Espresso with " + amount + "ml of concentrated coffee");
+    }
+
+    @Override
     public int getAmount() {
         return this.amount;
     }

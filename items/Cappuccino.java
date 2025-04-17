@@ -21,6 +21,11 @@ public class Cappuccino implements Drink {
     }
 
     @Override
+    public void make() {
+        System.out.println("Preparing Cappuccino with " + amount + "ml of milk and espresso");
+    }
+
+    @Override
     public int getAmount() {
         return this.amount;
     }

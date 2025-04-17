@@ -21,6 +21,11 @@ public class CaffeLatte implements Drink {
     }
 
     @Override
+    public void make() {
+        System.out.println("Preparing Caffè Latte with " + amount + "ml of steamed milk and espresso");
+    }
+
+    @Override
     public int getAmount() {
         return this.amount;
     }

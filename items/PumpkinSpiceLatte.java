@@ -2,17 +2,17 @@ package items;
 
 import models.Cup;
 
-public class Americano implements Drink {
-    private static final double BASE_PRICE = 2.5;
+public class PumpkinSpiceLatte implements Drink {
     private int amount;
+    private static final double BASE_PRICE = 4.50;
 
-    public Americano(Cup cup) {
-        this.amount = 150;
+    public PumpkinSpiceLatte(Cup cup) {
+        this.amount = 220;
     }
 
     @Override
     public String getName() {
-        return "Americano";
+        return "Pumpkin Spice Latte";
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Americano implements Drink {
 
     @Override
     public void make() {
-        System.out.println("Brewing Americano with " + amount + "ml of water");  
+        System.out.println("Preparing Pumpkin Spice Latte with " + amount + "ml of spiced milk and espresso");
     }
 
     @Override
