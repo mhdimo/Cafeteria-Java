@@ -44,9 +44,6 @@ Enter your choice: 1
 Selected Normal cup (200 ml).
 ```
 
-### GUI Mode
-![GUI Screenshot](gui-screenshot.png) (Screenshot to be added)
-
 ## System Architecture
 - **Design Patterns**:
   - Factory: Cup creation
